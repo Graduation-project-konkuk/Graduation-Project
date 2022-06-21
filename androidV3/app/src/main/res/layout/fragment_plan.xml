@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlanFragment">
+
+    <LinearLayout
+        android:id="@+id/plan_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="계획페이지"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/plan_addbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="추가버튼" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/plan_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/xml_border"
+                android:padding="10dp"
+                android:text="날짜 몸무게 운동 reps"
+                android:textSize="20dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:layout_marginBottom="20dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:padding="5dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/xml_border"
+                android:id="@+id/cur_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="현재"/>
+
+            <TextView
+                android:padding="5dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/xml_border"
+                android:id="@+id/max_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="최고"/>
+
+            <TextView
+                android:padding="5dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/xml_border"
+                android:id="@+id/min_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="최저"/>
+            <TextView
+                android:padding="5dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/xml_border"
+                android:id="@+id/bmi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BMI"/>
+            <TextView
+                android:padding="5dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/xml_border"
+                android:id="@+id/height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="신장"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>
