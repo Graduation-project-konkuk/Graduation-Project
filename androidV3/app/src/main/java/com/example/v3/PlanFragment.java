@@ -207,9 +207,11 @@ public class PlanFragment extends Fragment {
 
     private void fillStatus() {
         cur_weight.setText(prefs.getString("weight", "None"));
-        max_weight.setText(prefs.getString("max_weight", "None"));
-        min_weight.setText(prefs.getString("min_weight", "None"));
-        bmi.setText(prefs.getString("bmi", "None"));
+        max_weight.setText(prefs.getString("max_weight", prefs.getString("weight", "None")));
+        min_weight.setText(prefs.getString("min_weight", prefs.getString("weight", "None")));
+        double b = Math.pow(BigDecimal.valueOf(Integer.parseInt(prefs.getString("height", "1"))).divide(new BigDecimal(100),2, RoundingMode.HALF_EVEN).doubleValue(),2);
+        double result = BigDecimal.valueOf(Integer.parseInt(prefs.getString("weight", "1"))).divide(new BigDecimal(b),2,RoundingMode.HALF_EVEN).doubleValue();
+        bmi.setText(String.valueOf(result));
         height.setText(prefs.getString("height", "None"));
     }
 
