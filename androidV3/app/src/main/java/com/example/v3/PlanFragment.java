@@ -1,11 +1,17 @@
 package com.example.v3;
 
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +62,8 @@ public class PlanFragment extends Fragment {
     private TextView min_weight;
     private TextView bmi;
     private TextView height;
+
+    private ActivityResultLauncher<Intent> resultLauncher;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -153,31 +161,44 @@ public class PlanFragment extends Fragment {
          * 추가버튼으로 추가하면 갱신 할 것인가?
          */
 
-        AddPlanDto addPlanDto = new AddPlanDto(null, null, null, null);
-
-
-
+        /**
+         * 액티비티 콜백 함수
+         */
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        System.out.println(result.getResultCode());
+                        if(result.getResultCode() == RESULT_OK){
+                            Intent intent = result.getData();
+                            AddPlanDto addPlanDto = (AddPlanDto) intent.getSerializableExtra("addPlanDto");
+                            System.out.println("yes");
+                            cur_weight.setText(addPlanDto.getSaveWeight());
+                            System.out.println("maxWeight: " + Integer.parseInt((String) max_weight.getText()));
+                            System.out.println("addPlanDto.saveWeight : " + addPlanDto.getSaveWeight());
+                            if(Integer.parseInt((String) max_weight.getText()) < Integer.parseInt(addPlanDto.getSaveWeight())){
+                                edit.putString("max_weight", addPlanDto.getSaveWeight());
+                                max_weight.setText(addPlanDto.getSaveWeight());
+                            }
+                            if(Integer.parseInt((String) min_weight.getText()) > Integer.parseInt(addPlanDto.getSaveWeight())){
+                                edit.putString("min_weight", addPlanDto.getSaveWeight());
+                                min_weight.setText(addPlanDto.getSaveWeight());
+                            }
+                            double b = Math.pow(BigDecimal.valueOf(Integer.parseInt(prefs.getString("height", "1"))).divide(new BigDecimal(100),2, RoundingMode.HALF_EVEN).doubleValue(),2);
+                            double bmiResult = BigDecimal.valueOf(Integer.parseInt(addPlanDto.getSaveWeight())).divide(new BigDecimal(b),2,RoundingMode.HALF_EVEN).doubleValue();
+                            edit.putString("bmi", String.valueOf(bmiResult));
+                            bmi.setText(String.valueOf(bmiResult));
+                            System.out.println("end");
+                            edit.commit();
+                        }
+                    }
+                });
         add_plan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddPlan.class);
-                intent.putExtra("AddPlanDto", addPlanDto);
-                startActivity(intent);
-
-                cur_weight.setText(addPlanDto.getSaveWeight());
-                if(Integer.parseInt((String) max_weight.getText()) < Integer.parseInt(addPlanDto.getSaveWeight())){
-                    edit.putString("max_weight", addPlanDto.getSaveWeight());
-                    max_weight.setText(addPlanDto.getSaveWeight());
-                }
-                if(Integer.parseInt((String) min_weight.getText()) > Integer.parseInt(addPlanDto.getSaveWeight())){
-                    edit.putString("min_weight", addPlanDto.getSaveWeight());
-                    min_weight.setText(addPlanDto.getSaveWeight());
-                }
-                double b = Math.pow(BigDecimal.valueOf(Integer.parseInt(prefs.getString("height", "1"))).divide(new BigDecimal(100),2, RoundingMode.HALF_EVEN).doubleValue(),2);
-                double result = BigDecimal.valueOf(Integer.parseInt(addPlanDto.getSaveWeight())).divide(new BigDecimal(b),2,RoundingMode.HALF_EVEN).doubleValue();
-                edit.putString("bmi", String.valueOf(result));
-                bmi.setText(String.valueOf(result));
-                edit.commit();
+                resultLauncher.launch(intent);
             }
         });
 

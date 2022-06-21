@@ -126,23 +126,28 @@ public class Login extends AppCompatActivity {
                                 /**
                                  * 응답 어떻게 올지 정해야 한다.
                                  */
-                                JSONObject jsonObject;
-                                String JWToken = null;
+                                System.out.println("header Token: " + response.header("Authorization"));
+                                JSONObject jsonObject = null;
+
+                                /**
+                                 * json 파싱
+                                 */
                                 try {
                                     jsonObject = new JSONObject(responseData);
-                                    JWToken = jsonObject.getString("data");
-
+                                    edit.putString("token", response.header("Authorization"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
-                                System.out.println("JWToken!:" + JWToken);
-                                if(JWToken != null){
-                                    edit.putString("token", JWToken);
-                                    edit.commit();
+                                if(flag.equals("no")){
+                                    try {
+                                        edit.putString("height", jsonObject.getString("height"));
+                                        edit.putString("weight", jsonObject.getString("weight"));
+                                        edit.commit();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-
-                                System.out.println("token!: " + prefs.getString("token",""));
 
                                 runOnUiThread(new Runnable() {
                                     @Override

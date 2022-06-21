@@ -148,6 +148,8 @@ public class AddPlan extends AppCompatActivity {
                                 });
 
                                 // 이전으로 돌아가기
+                                intent.putExtra("addPlanDto", addPlanDto);
+                                setResult(RESULT_OK, intent);
                                 finish();
                             }
                         }
