@@ -8,7 +8,6 @@ public class PlanItem {
     String reps;
 
     public PlanItem(String date, String weight, String exercise, String reps) {
-        this.date = date;
         this.weight = weight;
         this.exercise = exercise;
         this.reps = reps;

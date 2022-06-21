@@ -7,20 +7,17 @@ public class AddPlanDto implements Serializable {
     private String saveWeight;
     private String saveExercise;
     private String saveReps;
-    private String saveDate;
 
-    public AddPlanDto(String saveWeight, String saveExercise, String saveReps, String saveDate) {
+    public AddPlanDto(String saveWeight, String saveExercise, String saveReps) {
         this.saveWeight = saveWeight;
         this.saveExercise = saveExercise;
         this.saveReps = saveReps;
-        this.saveDate = saveDate;
     }
 
-    public void saveAll(String saveWeight, String saveExercise, String saveReps, String saveDate){
+    public void saveAll(String saveWeight, String saveExercise, String saveReps){
         this.saveWeight = saveWeight;
         this.saveExercise = saveExercise;
         this.saveReps = saveReps;
-        this.saveDate = saveDate;
     }
 
     public String getSaveWeight() {
@@ -35,7 +32,4 @@ public class AddPlanDto implements Serializable {
         return saveReps;
     }
 
-    public String getSaveDate() {
-        return saveDate;
-    }
 }

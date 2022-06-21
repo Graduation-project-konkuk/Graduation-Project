@@ -133,8 +133,12 @@ public class PlanFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    Log.d("data : ", data);
-                    System.out.println(data);
+                    if(data != null){
+                        Log.d("data : ", data);
+                        System.out.println(data);
+                    }else{
+                        System.out.println("입력 하세요!");
+                    }
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -173,10 +177,7 @@ public class PlanFragment extends Fragment {
                         if(result.getResultCode() == RESULT_OK){
                             Intent intent = result.getData();
                             AddPlanDto addPlanDto = (AddPlanDto) intent.getSerializableExtra("addPlanDto");
-                            System.out.println("yes");
                             cur_weight.setText(addPlanDto.getSaveWeight());
-                            System.out.println("maxWeight: " + Integer.parseInt((String) max_weight.getText()));
-                            System.out.println("addPlanDto.saveWeight : " + addPlanDto.getSaveWeight());
                             if(Integer.parseInt((String) max_weight.getText()) < Integer.parseInt(addPlanDto.getSaveWeight())){
                                 edit.putString("max_weight", addPlanDto.getSaveWeight());
                                 max_weight.setText(addPlanDto.getSaveWeight());
@@ -185,12 +186,13 @@ public class PlanFragment extends Fragment {
                                 edit.putString("min_weight", addPlanDto.getSaveWeight());
                                 min_weight.setText(addPlanDto.getSaveWeight());
                             }
+                            System.out.println("height1! : " + prefs.getString("height", ""));
                             double b = Math.pow(BigDecimal.valueOf(Integer.parseInt(prefs.getString("height", "1"))).divide(new BigDecimal(100),2, RoundingMode.HALF_EVEN).doubleValue(),2);
                             double bmiResult = BigDecimal.valueOf(Integer.parseInt(addPlanDto.getSaveWeight())).divide(new BigDecimal(b),2,RoundingMode.HALF_EVEN).doubleValue();
                             edit.putString("bmi", String.valueOf(bmiResult));
                             bmi.setText(String.valueOf(bmiResult));
-                            System.out.println("end");
                             edit.commit();
+                            System.out.println("height2! : " + prefs.getString("height", ""));
                         }
                     }
                 });

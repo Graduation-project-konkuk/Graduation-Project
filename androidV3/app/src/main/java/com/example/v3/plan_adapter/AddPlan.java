@@ -54,12 +54,12 @@ public class AddPlan extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        add_date = findViewById(R.id.add_date);
         add_weight = findViewById(R.id.add_weight);
         add_exercise = findViewById(R.id.add_exericse);
         add_reps = findViewById(R.id.add_reps);
 
-        addPlanDto = (AddPlanDto) intent.getSerializableExtra("AddPlanDto");
+        addPlanDto = new AddPlanDto("", "", "");
+
 
         prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         edit = prefs.edit();
@@ -74,14 +74,13 @@ public class AddPlan extends AppCompatActivity {
                  * 여기서 저장버튼 누르면 위에 네가지 textview들 서버로 전송
                  * PlanAdapter에도 즉시 반영하여 업데이트 한다.
                  */
-                String saveDate = add_date.getText().toString().trim();
                 String saveWeight = add_weight.getText().toString().trim();
                 String saveExercise = add_exercise.getText().toString().trim();
                 String saveReps = add_reps.getText().toString().trim();
 
-                if (saveWeight.length() > 0 || saveExercise.length() > 0 || saveReps.length() > 0 || saveDate.length() > 0 ) {
+                if (saveWeight.length() > 0 || saveExercise.length() > 0 || saveReps.length() > 0) {
 
-                    String json = addPlanJson(saveDate, saveWeight, saveExercise, saveReps);
+                    String json = addPlanJson(saveWeight, saveExercise, saveReps);
                     System.out.println(json);
                     RequestBody body = RequestBody.create(json, JSON);
 
@@ -92,7 +91,6 @@ public class AddPlan extends AppCompatActivity {
 //                            .add("reps", saveReps)
 //                            .build();
 
-                    Log.d("data : ", saveDate);
                     Log.d("data : ", saveWeight);
                     Log.d("data : ", saveExercise);
                     Log.d("data : ", saveReps);
@@ -134,7 +132,7 @@ public class AddPlan extends AppCompatActivity {
                                 // 서브 스레드 Ui 변경 할 경우 에러
                                 // 메인스레드 Ui 설정
 
-                                addPlanDto.saveAll(saveWeight, saveExercise, saveReps, saveDate);
+                                addPlanDto.saveAll(saveWeight, saveExercise, saveReps);
 
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -182,7 +180,7 @@ public class AddPlan extends AppCompatActivity {
         return true;
     }
 
-    public String addPlanJson(String saveDate, String saveWeight, String saveExercise, String saveReps){
+    public String addPlanJson(String saveWeight, String saveExercise, String saveReps){
         return "{\"weight\":\"" + saveWeight + "\","
                 + "\"exerciseName\":\"" + saveExercise + "\","
                 + "\"reps\":\"" + saveReps +"\"}";
